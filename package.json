@@ -1,5 +1,13 @@
 {
   "dependencies": {
-    "express": "^4.17.1"
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "fs": "^0.0.1-security",
+    "multer": "^1.4.2",
+    "nodemon": "^2.0.6"
+  },
+  "scripts": {
+    "serve": "nodemon app.js"
   }
 }
