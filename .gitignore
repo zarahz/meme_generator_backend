@@ -1,5 +1,7 @@
 # ignore upload folder (should be a server instance only!)
-src/uploads/
+src/uploads/*
+# keep the uploads folder
+!src/uploads/.gitkeep
 
 # Logs
 logs

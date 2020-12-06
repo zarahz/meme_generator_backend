@@ -15,7 +15,7 @@ const handleError = (err, res) => {
 };
 
 const upload = multer({
-    dest: "/temp"
+    dest: "./temp"
     // you might also want to set some limits: https://github.com/expressjs/multer#limits
 });
 

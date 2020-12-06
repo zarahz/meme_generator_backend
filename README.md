@@ -4,3 +4,6 @@
 ```
 node .\src\app.js
 ```
+
+### Prerequisite
+install mongoDB (see: https://docs.mongodb.com/manual/administration/install-community/ )
