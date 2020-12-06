@@ -2,7 +2,11 @@
 
 ### Run project with
 ```
-node .\src\app.js
+yarn serve
+```
+or
+```
+nodemon ./src/app.js
 ```
 
 ### Prerequisite
