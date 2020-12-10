@@ -27,7 +27,7 @@ const getImages = async () => {
  */
 const getImage = async (queryObject) => {
     const image = await Image.findOne(queryObject);
-    if (!image) { return -1; } // error code -1 is returned for no user found
+    if (!image) { return -1; } // error code -1 is returned for no image found
     return image;
 };
 

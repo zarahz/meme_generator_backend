@@ -39,6 +39,10 @@ app.get("/", (req, res) => {
 
 // image API
 app.use(require('./routes/image'));
+// user API
+app.use(require('./routes/user'));
+// user API
+app.use(require('./routes/authentification'));
 
 
 app.listen(port, () => {
