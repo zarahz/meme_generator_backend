@@ -3,7 +3,7 @@ const { promises: fs } = require("fs");
 const multer = require("multer");
 const { v4: uuid } = require('uuid');
 const express = require('express');
-const { createComment, getAllComments, getComments, deleteComment, deleteComments } = require('../lib/comment')
+const { createComment, getComments, deleteComment, deleteComments } = require('../lib/comment')
 
 const router = express.Router();
 
@@ -16,15 +16,6 @@ const handleError = (err, res) => {
 
 router.get("/comments", async (req, res) => {
     const dbComments = await getComments(req.body);
-    if (!dbComments) {
-        return res.status(500).send("Error occured");
-    }
-
-    return res.status(200).send({ dbComments });
-});
-
-router.get("/allcomments", async (req, res) => {
-    const dbComments = await getAllComments();
     if (!dbComments) {
         return res.status(500).send("Error occured");
     }

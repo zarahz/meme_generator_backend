@@ -17,13 +17,6 @@ const createComment = async (commentObj) => {
     return newComment;
 };
 
-/**
- * READ all comment entries
- */
-const getAllComments = async () => {
-    const comments = await Comment.find({});
-    return comments;
-};
 
 /**
  * READ comments for specific userId or specific imageId
@@ -50,5 +43,5 @@ const deleteComment = async (queryObject) => {
     await Comment.deleteOne(queryObject);
 };
 
-module.exports = { createComment, getAllComments, getComments, deleteComment, deleteComments }
+module.exports = { createComment, getComments, deleteComment, deleteComments }
 
