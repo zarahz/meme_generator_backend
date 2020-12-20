@@ -1,4 +1,5 @@
 const { Comment } = require('../model/index');
+const { v4: uuid } = require('uuid');
 
 /** CRUD OPERATIONS ON Comments 
 CRUD = Create, Read, Update, Delete */
@@ -11,6 +12,7 @@ CRUD = Create, Read, Update, Delete */
 const createComment = async (commentObj) => {
     const newComment = new Comment(commentObj);
     newComment.creationDate = new Date()
+    newComment.id = uuid();
     await newComment.save();
     return newComment;
 };
@@ -18,26 +20,16 @@ const createComment = async (commentObj) => {
 /**
  * READ all comment entries
  */
-const getComments = async () => {
+const getAllComments = async () => {
     const comments = await Comment.find({});
     return comments;
 };
 
 /**
- * READ comments for specific userId
+ * READ comments for specific userId or specific imageId
  * @param {*} queryObject 
  */
-const getComment = async (queryObject) => {
-    const comment = await Comment.find(queryObject);
-    if (!comment) { return -1; } // error code -1 is returned for no comment found
-    return comment;
-};
-
-/**
- * READ comments for specific imageId
- * @param {*} queryObject 
- */
-const getCommentsFor = async (queryObject) => {
+const getComments = async (queryObject) => {
     const comment = await Comment.find(queryObject);
     if (!comment) { return -1; } // error code -1 is returned for no comment found
     return comment;
@@ -58,5 +50,5 @@ const deleteComment = async (queryObject) => {
     await Comment.deleteOne(queryObject);
 };
 
-module.exports = { createComment, getComments, getCommentsFor, getComment, deleteComment, deleteComments }
+module.exports = { createComment, getAllComments, getComments, deleteComment, deleteComments }
 
