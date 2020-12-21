@@ -15,11 +15,10 @@ const handleError = (err, res) => {
 };
 
 router.get("/comments", async (req, res) => {
-    const dbComments = await getComments(req.body);
+    const dbComments = await getComments(req.query);
     if (!dbComments) {
         return res.status(500).send("Error occured");
     }
-
     return res.status(200).send({ dbComments });
 });
 
