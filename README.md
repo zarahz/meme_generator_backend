@@ -12,6 +12,10 @@ nodemon ./src/app.js
 ### Prerequisite
 Install and run mongoDB (see: https://docs.mongodb.com/manual/administration/install-community/ )
 
+#### MongoDB cheatsheet for MacOS
+
+brew services start mongodb-community@4.4
+
 #### MongoDB cheatsheet for Ubuntu based Linux
 
 Install it with these commands
