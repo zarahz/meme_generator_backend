@@ -45,6 +45,10 @@ app.use(require('./routes/user'));
 app.use(require('./routes/authentification'));
 
 app.use(require('./routes/comment'));
+// upvote API
+app.use(require('./routes/upvote'));
+// downvote API
+app.use(require('./routes/downvote'));
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
