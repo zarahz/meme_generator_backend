@@ -1,6 +1,8 @@
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const express = require('express')
+const cookieParser = require('cookie-parser');
+const express = require('express');
+const config = require('../config');
 require('./db');
 
 const app = express()
@@ -26,6 +28,7 @@ const checkUrl = (origin, callback) => {
 // activate the cors functionality
 app.use(cors({ credentials: true, origin: checkUrl }));
 
+app.use(cookieParser(config.secret))
 app.use(bodyParser.json());
 app.options('*', cors());
 

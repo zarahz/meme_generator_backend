@@ -40,6 +40,7 @@ router.post('/register', async (req, res) => {
         const user = await createUser(req.body);
         if (user && Object.keys(user).length !== 0) {
             const token = generateToken(user.id);
+            res.cookie('token', token, { httpOnly: false });
             return res.status(200).send({ token });
         }
     } catch (error) {

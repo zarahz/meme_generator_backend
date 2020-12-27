@@ -13,9 +13,9 @@ const router = express.Router();
  *
  * res.query: token
  */
-router.get('/token', tokenVerification, (req, res) => {
-    res.cookie('user', JSON.stringify(req.user), { httpOnly: false });
-    return res.status(200).send(req.user);
+router.get('/me', tokenVerification, (req, res) => {
+    const { email, username, _id } = req.user;
+    return res.status(200).send({ email, username, _id });
 });
 
 /**
@@ -30,10 +30,12 @@ router.post('/login', async (req, res) => {
     const user = await authenticateUser(username, password);
 
     if (user.hasOwnProperty("error")) {
-        return res.status(400).send({ user });
+        return res.status(400).send({ error: user.error });
     }
     const token = generateToken(user.id);
     res.cookie('token', token, { httpOnly: false });
+    // res.cookie('user', JSON.stringify(user), { httpOnly: false });
+
     return res.status(200).send({ token });
 });
 
