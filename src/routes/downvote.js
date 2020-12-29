@@ -1,5 +1,5 @@
 const express = require('express');
-const { createDownvote, getDownvotes, deleteDownvote} = require('../lib/upvote')
+const { createDownvote, getDownvotes, deleteDownvote} = require('../lib/downvote')
 
 const router = express.Router();
 
@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get("/downvotes", async (req, res) => {
     const dbDownvotes = await getDownvotes(req.query);
-    if (!dbUpvotes) {
+    if (!dbDownvotes) {
         return res.status(500).send("Error occured");
     }
     return res.status(200).send({ dbDownvotes });
@@ -16,7 +16,7 @@ router.get("/downvotes", async (req, res) => {
 router.post('/post-downvote', async (req, res) => {
     try {
         const downvote = await createDownvote(req.body);
-        if (upvote && Object.keys(downvote).length !== 0) {
+        if (downvote && Object.keys(downvote).length !== 0) {
             return res.status(200).send();
         }
     } catch (error) {

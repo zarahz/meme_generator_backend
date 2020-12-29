@@ -9,11 +9,11 @@ const { v4: uuid } = require('uuid');
  * @param {*} downvoteObj 
  */
 const createDownvote = async (downvoteObj) => {
-    const newUpvote = new Upvote(downvoteObj);
+    const newDownvote = new Downvote(downvoteObj);
     
-    newUpvote.id = uuid();
-    await newUpvote.save();
-    return newUpvote;
+    newDownvote.id = uuid();
+    await newDownvote.save();
+    return newDownvote;
 };
 
 
