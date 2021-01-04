@@ -10,7 +10,7 @@ const { v4: uuid } = require('uuid');
  */
 const createDownvote = async (downvoteObj) => {
     const newDownvote = new Downvote(downvoteObj);
-    
+
     newDownvote.id = uuid();
     await newDownvote.save();
     return newDownvote;
@@ -23,7 +23,7 @@ const createDownvote = async (downvoteObj) => {
  */
 const getDownvotes = async (queryObject) => {
     const downvote = await Downvote.find(queryObject);
-    if (!downvote) { return -1; } // error code -1 is returned for no comment found
+    if (!downvote) { return -1; } // error code -1 is returned for no downvotes found
     return downvote;
 };
 

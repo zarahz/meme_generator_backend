@@ -1,8 +1,10 @@
+
+const { promises: fs } = require("fs");
+
 const express = require('express');
-const { createUpvote, getUpvotes, deleteUpvote} = require('../lib/upvote')
+const { createUpvote, getUpvotes, deleteUpvote } = require('../lib/upvote')
 
 const router = express.Router();
-
 
 
 router.get("/upvotes", async (req, res) => {

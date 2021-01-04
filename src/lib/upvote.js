@@ -9,8 +9,13 @@ const { v4: uuid } = require('uuid');
  * @param {*} upvoteObj 
  */
 const createUpvote = async (upvoteObj) => {
+    const upvote = await Upvote.findOneAndDelete({ authorId: upvoteObj.authorId, imageId: upvoteObj.imageId })
+    //console.log(upvote)
+    if (upvote) {
+        return upvote
+    }
     const newUpvote = new Upvote(upvoteObj);
-    
+    newUpvote.creationDate = new Date()
     newUpvote.id = uuid();
     await newUpvote.save();
     return newUpvote;
@@ -23,11 +28,9 @@ const createUpvote = async (upvoteObj) => {
  */
 const getUpvotes = async (queryObject) => {
     const upvote = await Upvote.find(queryObject);
-    if (!upvote) { return -1; } // error code -1 is returned for no comment found
+    if (!upvote) { return -1; } // error code -1 is returned for no upvotes found
     return upvote;
 };
-
-
 
 /**
  * DELETE upvote
