@@ -9,8 +9,12 @@ const { v4: uuid } = require('uuid');
  * @param {*} downvoteObj 
  */
 const createDownvote = async (downvoteObj) => {
+    const downvote = await Downvote.findOneAndDelete({ authorId: downvoteObj.authorId, imageId: downvoteObj.imageId })
+    if (downvote) {
+        return downvote
+    }
     const newDownvote = new Downvote(downvoteObj);
-
+    newDownvote.creationDate = new Date()
     newDownvote.id = uuid();
     await newDownvote.save();
     return newDownvote;
