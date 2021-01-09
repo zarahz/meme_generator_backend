@@ -5,6 +5,11 @@ const { v4: uuid } = require('uuid');
 const express = require('express');
 const { createComment, getComments, deleteComment, deleteComments } = require('../lib/comment')
 
+//
+const { getUser } = require('../lib/user');
+const comment = require("../model/comment");
+//
+
 const router = express.Router();
 
 const handleError = (err, res) => {
@@ -15,12 +20,31 @@ const handleError = (err, res) => {
 };
 
 router.get("/comments", async (req, res) => {
-    const dbComments = await getComments(req.query);
+    var dbComments = await getComments(req.query);
     if (!dbComments) {
         return res.status(500).send("Error occured");
     }
-    return res.status(200).send({ dbComments });
+    var betterComments = await addUserNameToCommentArray(dbComments);
+    console.log("betterComments");
+    console.log(betterComments);
+    console.log("dbComments");
+    console.log(dbComments);
+    return res.status(200).send(betterComments);
 });
+
+async function addUserNameToCommentArray(dbComments) {
+    var betterComments = [];
+    // CONSTRUCTION SITE STARTS HERE
+    for (const element of dbComments) {
+        var comment = JSON.parse(JSON.stringify(element));
+        const user = await getUser({ "_id": element.authorId });
+        if (user === -1) { comment.username = "dummy"; }
+        comment.username = user.username;
+        betterComments.push(comment);
+    };
+    return betterComments;
+};
+
 
 router.post('/post-comment', async (req, res) => {
     try {
