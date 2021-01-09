@@ -30,7 +30,6 @@ router.get("/comments", async (req, res) => {
 
 async function addUserNameToCommentArray(dbComments) {
     var betterComments = [];
-    // CONSTRUCTION SITE STARTS HERE
     for (const element of dbComments) {
         var comment = JSON.parse(JSON.stringify(element));
         const user = await getUser({ "_id": element.authorId });
@@ -40,7 +39,6 @@ async function addUserNameToCommentArray(dbComments) {
     };
     return betterComments;
 };
-
 
 router.post('/post-comment', async (req, res) => {
     try {

@@ -4,7 +4,7 @@ const multer = require("multer");
 const { v4: uuid } = require('uuid');
 const express = require('express');
 const { createImage, getImages, deleteImages } = require('../lib/image')
-
+const { getComments } = require('../lib/comment')
 const router = express.Router();
 
 const handleError = (err, res) => {
@@ -51,10 +51,29 @@ router.get("/images", async (req, res) => {
     if (!dbImages) {
         return res.status(500).send("Error occured");
     }
+    // add upvotecount, downvoteCount, commentCount to every image.
+    var betterImageArray = await addInfoToMemeArray(dbImages);
 
-    return res.status(200).send({ dbImages });
+    return res.status(200).send(betterImageArray);
     //res.sendFile(path.join(__dirname, "./uploads/image.png"));
 });
+
+async function addInfoToMemeArray(dbImages) {
+    var memes = [];
+    for (const element of dbImages) {
+        var meme = JSON.parse(JSON.stringify(element));
+        meme.commentCount = -1;
+        meme.upvoteCount = -1;
+        meme.downvoteCount = -1;
+        const comments = await getComments(); // does this work?
+        if (comments != -1) {
+            meme.commentCount = comments.length;
+        }
+        // TODO upvotes and downvotes
+        memes.push(meme);
+    };
+    return memes;
+};
 
 router.get("/delete-images", async (req, res) => {
     const dbImages = await deleteImages();
