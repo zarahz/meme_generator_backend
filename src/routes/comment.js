@@ -25,10 +25,6 @@ router.get("/comments", async (req, res) => {
         return res.status(500).send("Error occured");
     }
     var betterComments = await addUserNameToCommentArray(dbComments);
-    console.log("betterComments");
-    console.log(betterComments);
-    console.log("dbComments");
-    console.log(dbComments);
     return res.status(200).send(betterComments);
 });
 
