@@ -5,6 +5,9 @@ const { v4: uuid } = require('uuid');
 const express = require('express');
 const { getImages } = require('../lib/image')
 const { getComments } = require('../lib/comment')
+const { getUpvotes } = require('../lib/upvote')
+const { getDownvotes } = require('../lib/downvote')
+
 const router = express.Router();
 
 const handleError = (err, res) => {
@@ -41,7 +44,14 @@ async function addInfoToMemeArray(dbImages) {
         if (comments != -1) {
             meme.commentCount = comments.length;
         }
-        // TODO upvotes and downvotes
+        const upvoteCount = await getUpvotes({ "imageId": meme._id });
+        if (upvoteCount != -1) {
+            meme.upvoteCount = upvoteCount.length;
+        }
+        const downvoteCount = await getDownvotes({ "imageId": meme._id });
+        if (downvoteCount != -1) {
+            meme.downvoteCount = downvoteCount.length;
+        }
         memes.push(meme);
     };
     return memes;
