@@ -3,7 +3,7 @@ const { promises: fs } = require("fs");
 const multer = require("multer");
 const { v4: uuid } = require('uuid');
 const express = require('express');
-const { createImage, getImages, deleteImages } = require('../lib/image')
+const { createImage, getImages, deleteImages, getImage } = require('../lib/image')
 const { getComments } = require('../lib/comment')
 const router = express.Router();
 
@@ -46,8 +46,17 @@ router.post(
     }
 );
 
+router.get("/image", async (req, res) => {
+    const image = await getImage(req.query);
+    if (!image || image == -1) {
+        return res.status(500).send("Error occured");
+    }
+    console.log("returning image: " + JSON.stringify(image));
+    return res.status(200).send({ image });
+});
 
-// Move this to it's own file?
+
+
 router.get("/images", async (req, res) => {
     const dbImages = await getImages();
     if (!dbImages) {
@@ -57,8 +66,6 @@ router.get("/images", async (req, res) => {
     return res.status(200).send(dbImages);
     //res.sendFile(path.join(__dirname, "./uploads/image.png"));
 });
-
-
 
 router.get("/delete-images", async (req, res) => {
     const dbImages = await deleteImages();
