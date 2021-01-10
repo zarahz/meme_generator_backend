@@ -46,6 +46,8 @@ router.post(
     }
 );
 
+
+// Move this to it's own file?
 router.get("/images", async (req, res) => {
     const dbImages = await getImages();
     if (!dbImages) {
@@ -65,7 +67,7 @@ async function addInfoToMemeArray(dbImages) {
         meme.commentCount = -1;
         meme.upvoteCount = -1;
         meme.downvoteCount = -1;
-        const comments = await getComments(); // does this work?
+        const comments = await getComments({ "imageId": meme._id });
         if (comments != -1) {
             meme.commentCount = comments.length;
         }
