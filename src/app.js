@@ -34,6 +34,7 @@ app.options('*', cors());
 
 
 app.use('/static', express.static(__dirname + '/uploads'));
+app.use('/static-templates', express.static(__dirname + '/templates'));
 
 
 app.get("/", (req, res) => {

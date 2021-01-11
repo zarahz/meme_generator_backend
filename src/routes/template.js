@@ -26,9 +26,12 @@ router.post(
         let tags = req.body.tags;
         let fileName = uuid();
         const fileType = path.extname(req.file.originalname).toLowerCase();
+        let url = ("http://localhost:3000/static-templates/" + fileName + fileType);
+
         const templateData = {
             fileName,
             tags,
+            url,
             fileType,
             nameAndFileType: fileName + fileType,
         }
