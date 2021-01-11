@@ -23,12 +23,14 @@ router.post(
     upload.single("templatefile" /* name attribute of <file> element in your form */),
     async (req, res) => {
         const tempPath = req.file.path;
-        let name = req.body.tags;
+        let tags = req.body.tags;
+        let fileName = uuid();
         const fileType = path.extname(req.file.originalname).toLowerCase();
         const templateData = {
-            name,
+            fileName,
+            tags,
             fileType,
-            nameAndFileType: name + fileType,
+            nameAndFileType: fileName + fileType,
         }
         const targetPath = path.join(__dirname, "../templates/" + templateData.nameAndFileType);
         templateData.path = targetPath;

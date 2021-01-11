@@ -3,8 +3,8 @@ src/uploads/*
 # keep the uploads folder
 !src/uploads/.gitkeep
 # same for the uploaded templates :)
-#src/templates/*
-#!src/templates/.gitkeep
+src/templates/*
+!src/templates/.gitkeep
 
 # Logs
 logs
