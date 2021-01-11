@@ -3,6 +3,7 @@ const User = require('./user');
 const Comment = require('./comment');
 const Upvote = require('./upvote');
 const Downvote = require('./downvote');
+const Template = require('./template');
 
 
 module.exports = {
@@ -10,5 +11,6 @@ module.exports = {
     User,
     Comment,
     Upvote,
-    Downvote
+    Downvote,
+    Template
 };

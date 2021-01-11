@@ -13,12 +13,16 @@
 </head>
 
 <body>
-    <h1>Save image</h1>
-    <form method="post" enctype="multipart/form-data" action="/upload">
-        <input type="file" name="file">
+    <h1>Admin Dashboard!</h1>
+    <h2>Upload template</h2>
+
+    <form method="post" enctype="multipart/form-data" action="/upload-template">
+        <p>Select a template file</p>
+        <input type="file" name="templatefile">
+        <p>Enter desctiptive tags separated by spaces here:</p>
+        <input type="text" name="tags">
         <input type="submit" value="Submit">
     </form>
-    <img src="/image.png" />
 </body>
 
 </html>

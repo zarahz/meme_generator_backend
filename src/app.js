@@ -54,6 +54,8 @@ app.use(require('./routes/upvote'));
 app.use(require('./routes/downvote'));
 // memes API
 app.use(require('./routes/memes'));
+// memes API
+app.use(require('./routes/template'));
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
