@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const Image = new Schema({
-    name: { type: String },
+    name: { type: String }, //this is the fileName not the title!
     fileType: { type: String },
     nameAndFileType: { type: String },
     createdBy: { type: String },

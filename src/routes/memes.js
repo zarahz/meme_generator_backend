@@ -33,6 +33,7 @@ router.get("/memes", async (req, res) => {
     //res.sendFile(path.join(__dirname, "./uploads/image.png"));
 });
 
+// TODO move to lib
 async function addInfoToMemeArray(dbImages) {
     var memes = [];
     for (const element of dbImages) {
