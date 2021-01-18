@@ -6,7 +6,8 @@ const express = require('express');
 const { getImages } = require('../lib/image')
 const { getComments } = require('../lib/comment')
 const { getUpvotes } = require('../lib/upvote')
-const { getDownvotes } = require('../lib/downvote')
+const { getDownvotes } = require('../lib/downvote');
+const { tokenVerification } = require("./middleware");
 
 const router = express.Router();
 
@@ -24,6 +25,17 @@ const upload = multer({
 
 router.get("/memes", async (req, res) => {
     const dbImages = await getImages();
+    if (!dbImages) {
+        return res.status(500).send("Error occured");
+    }
+    var betterImageArray = await addInfoToMemeArray(dbImages);
+
+    return res.status(200).send(betterImageArray);
+    //res.sendFile(path.join(__dirname, "./uploads/image.png"));
+});
+
+router.get("/user-memes", tokenVerification, async (req, res) => {
+    const dbImages = await getImages({ createdBy: req.user.id });
     if (!dbImages) {
         return res.status(500).send("Error occured");
     }

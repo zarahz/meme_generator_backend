@@ -14,10 +14,11 @@ const createImage = async (imageObj) => {
 };
 
 /**
- * READ all image entries
+ * READ all (filtered) image entries
+ * @param {*} queryObject 
  */
-const getImages = async () => {
-    const images = await Image.find({});
+const getImages = async (queryObject = {}) => {
+    const images = await Image.find(queryObject);
     return images;
 };
 
