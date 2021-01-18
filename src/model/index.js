@@ -1,4 +1,5 @@
 const Image = require('./image');
+const ImageDraft = require('./imageDraft');
 const User = require('./user');
 const Comment = require('./comment');
 const Upvote = require('./upvote');
@@ -8,6 +9,7 @@ const Template = require('./template');
 
 module.exports = {
     Image,
+    ImageDraft,
     User,
     Comment,
     Upvote,

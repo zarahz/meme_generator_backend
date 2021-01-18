@@ -43,6 +43,8 @@ app.get("/", (req, res) => {
 
 // image API
 app.use(require('./routes/image'));
+// imageDraft API
+app.use(require('./routes/imageDraft'));
 // user API
 app.use(require('./routes/user'));
 // user API

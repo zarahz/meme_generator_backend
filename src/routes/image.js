@@ -5,6 +5,7 @@ const { v4: uuid } = require('uuid');
 const express = require('express');
 const { createImage, getImages, deleteImages, getImage } = require('../lib/image')
 const { getComments } = require('../lib/comment')
+const { authenticateUserByJWT } = require('../lib/user');
 const router = express.Router();
 
 const handleError = (err, res) => {
@@ -24,6 +25,7 @@ router.post(
     "/upload",
     upload.single("file" /* name attribute of <file> element in your form */),
     async (req, res) => {
+        let user = (req.cookies.token) && await authenticateUserByJWT(req.cookies.token);
         const tempPath = req.file.path;
         let name = uuid();
         const fileType = path.extname(req.file.originalname).toLowerCase();
@@ -31,6 +33,7 @@ router.post(
             name,
             fileType,
             nameAndFileType: name + fileType,
+            createdBy: (user) && user.id,
             creationDate: new Date()
         }
         const targetPath = path.join(__dirname, "../uploads/" + imageData.nameAndFileType);
