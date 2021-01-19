@@ -49,7 +49,7 @@ app.use(require('./routes/imageDraft'));
 app.use(require('./routes/user'));
 // user API
 app.use(require('./routes/authentification'));
-
+// comment API
 app.use(require('./routes/comment'));
 // upvote API
 app.use(require('./routes/upvote'));
@@ -57,8 +57,10 @@ app.use(require('./routes/upvote'));
 app.use(require('./routes/downvote'));
 // memes API
 app.use(require('./routes/memes'));
-// memes API
+// template API
 app.use(require('./routes/template'));
+// rendering API
+app.use(require('./routes/rendering'));
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
