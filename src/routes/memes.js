@@ -24,7 +24,7 @@ const upload = multer({
 });
 
 router.get("/memes", async (req, res) => {
-    const dbImages = await getImages();
+    const dbImages = await getImages({ visibility: "public" });
     if (!dbImages) {
         return res.status(500).send("Error occured");
     }

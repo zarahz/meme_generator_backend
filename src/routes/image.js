@@ -34,7 +34,8 @@ router.post(
             fileType,
             nameAndFileType: name + fileType,
             createdBy: (user) && user.id,
-            creationDate: new Date()
+            creationDate: new Date(),
+            visibility: req.body.visibility,
         }
         const targetPath = path.join(__dirname, "../uploads/" + imageData.nameAndFileType);
         imageData.path = targetPath;
@@ -54,21 +55,28 @@ router.get("/image", async (req, res) => {
     if (!image || image == -1) {
         return res.status(500).send("Error occured");
     }
-    console.log("returning image: " + JSON.stringify(image));
+
+    if (image.visibility === "private") {
+        //get the user if possible and check if the image belongs to him/her
+        const user = (req.cookies.token) && await authenticateUserByJWT(req.cookies.token);
+        if (!user || user === -1 || user.id !== image.createdBy) {
+            return res.status(401).send({ error: 'Unauthorized!' });
+        }
+    }
     return res.status(200).send({ image });
 });
 
 
 
-router.get("/images", async (req, res) => {
-    const dbImages = await getImages();
-    if (!dbImages) {
-        return res.status(500).send("Error occured");
-    }
+// router.get("/images", async (req, res) => {
+//     const dbImages = await getImages();
+//     if (!dbImages) {
+//         return res.status(500).send("Error occured");
+//     }
 
-    return res.status(200).send(dbImages);
-    //res.sendFile(path.join(__dirname, "./uploads/image.png"));
-});
+//     return res.status(200).send(dbImages);
+//     //res.sendFile(path.join(__dirname, "./uploads/image.png"));
+// });
 
 router.get("/delete-images", async (req, res) => {
     const dbImages = await deleteImages();
