@@ -7,7 +7,8 @@ const Image = new Schema({
     createdBy: { type: String },
     creationDate: { type: Date },
     path: { type: String, required: true },
-    visibility: { type: String, default: 'public' }
+    visibility: { type: String, default: 'public' },
+    title: { type: String }
 }); //required: true // trim: true
 
 module.exports = model('image', Image);

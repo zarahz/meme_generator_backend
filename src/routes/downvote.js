@@ -1,5 +1,6 @@
 const express = require('express');
-const { createDownvote, getDownvotes, deleteDownvote} = require('../lib/downvote')
+const { createDownvote, getDownvotes, deleteDownvote} = require('../lib/downvote');
+const { tokenVerification } = require('./middleware');
 
 const router = express.Router();
 
