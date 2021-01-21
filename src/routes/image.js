@@ -66,17 +66,15 @@ router.get("/image", async (req, res) => {
     return res.status(200).send({ image });
 });
 
+router.get("/images", async (req, res) => {
+    const dbImages = await getImages();
+    if (!dbImages) {
+        return res.status(500).send("Error occured");
+    }
 
-
-// router.get("/images", async (req, res) => {
-//     const dbImages = await getImages();
-//     if (!dbImages) {
-//         return res.status(500).send("Error occured");
-//     }
-
-//     return res.status(200).send(dbImages);
-//     //res.sendFile(path.join(__dirname, "./uploads/image.png"));
-// });
+    return res.status(200).send(dbImages);
+    //res.sendFile(path.join(__dirname, "./uploads/image.png"));
+});
 
 router.get("/delete-images", async (req, res) => {
     const dbImages = await deleteImages();

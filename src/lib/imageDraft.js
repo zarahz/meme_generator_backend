@@ -7,12 +7,9 @@ const { ImageDraft } = require('../model/index');
  * 
  * @param {*} imageObj 
  */
-const createOrUpdateImageDraft = async (imageDraftObj) => {
-    const imageDraft = await ImageDraft.updateOne({ userId: imageDraftObj.userId }, imageDraftObj, { upsert: true, new: true });
+const createImageDraft = async (imageDraftObj) => {
+    const imageDraft = new ImageDraft(imageDraftObj);
     return imageDraft;
-    // const newImage = new Image(imageObj);
-    // await newImage.save();
-    // return newImage;
 };
 
 /**
@@ -33,10 +30,19 @@ const getImageDraft = async (queryObject) => {
 };
 
 /**
+ * READ all image draft entry
+ * @param {*} queryObject 
+ */
+const getImageDrafts = async (queryObject) => {
+    const imageDrafts = await ImageDraft.find(queryObject);
+    return imageDrafts;
+};
+
+/**
  * DELETE one image entries
  */
 const deleteImageDraft = async (queryObject) => {
     await ImageDraft.deleteOne(queryObject);
 };
 
-module.exports = { createOrUpdateImageDraft, getImageDraft, deleteImageDraft, getAllImageDrafts }
+module.exports = { createImageDraft, getImageDrafts, getImageDraft, deleteImageDraft, getAllImageDrafts }

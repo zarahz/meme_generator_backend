@@ -7,7 +7,7 @@ const ImageDraft = new Schema({
     bottomText: { type: String },
     bottomTextOffset: { type: [Number], 'default': [0, -30] },
     memeSource: { type: String },
-    userId: { type: String, required: true, unique: true },
+    userId: { type: String, required: true },
     creationDate: { type: Date },
 })
 
