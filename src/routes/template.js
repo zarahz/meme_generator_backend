@@ -34,6 +34,7 @@ router.post(
             url,
             fileType,
             nameAndFileType: fileName + fileType,
+            isWebScreenshot: false
         }
         const targetPath = path.join(__dirname, "../templates/" + templateData.nameAndFileType);
         templateData.path = targetPath;
