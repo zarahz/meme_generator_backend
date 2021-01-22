@@ -8,6 +8,7 @@ const { createComment, getComments, deleteComment, deleteComments } = require('.
 //
 const { getUser } = require('../lib/user');
 const comment = require("../model/comment");
+const { tokenVerification } = require("./middleware");
 //
 
 const router = express.Router();
@@ -40,9 +41,11 @@ async function addUserNameToCommentArray(dbComments) {
     return betterComments;
 };
 
-router.post('/post-comment', async (req, res) => {
+router.post('/post-comment', tokenVerification, async (req, res) => {
     try {
-        const comment = await createComment(req.body);
+        let commentSubmission = req.body;
+        commentSubmission.authorId = req.user.id;
+        const comment = await createComment(commentSubmission);
         if (comment && Object.keys(comment).length !== 0) {
             return res.status(200).send();
         }
