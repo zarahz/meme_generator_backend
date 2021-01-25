@@ -1,9 +1,7 @@
 const express = require('express');
 const { createDownvote, getDownvotes, deleteDownvote} = require('../lib/downvote');
 const { tokenVerification } = require('./middleware');
-
 const router = express.Router();
-
 
 
 router.get("/downvotes", async (req, res) => {
@@ -14,9 +12,11 @@ router.get("/downvotes", async (req, res) => {
     return res.status(200).send({ dbDownvotes });
 });
 
-router.post('/post-downvote', async (req, res) => {
+router.post('/post-downvote', tokenVerification, async (req, res) => {
     try {
-        const downvote = await createDownvote(req.body);
+        let downvoteSubmission = req.body;
+        downvoteSubmission.authorId = req.user.id;
+        const downvote = await createDownvote(downvoteSubmission);
         if (downvote && Object.keys(downvote).length !== 0) {
             return res.status(200).send();
         }

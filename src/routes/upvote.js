@@ -1,10 +1,9 @@
-
-const { promises: fs } = require("fs");
-
 const express = require('express');
 const { createUpvote, getUpvotes, deleteUpvote } = require('../lib/upvote')
-
+const { tokenVerification } = require("./middleware");
 const router = express.Router();
+
+
 
 
 router.get("/upvotes", async (req, res) => {
@@ -15,9 +14,11 @@ router.get("/upvotes", async (req, res) => {
     return res.status(200).send({ dbUpvotes });
 });
 
-router.post('/post-upvote', async (req, res) => {
+router.post('/post-upvote',tokenVerification, async (req, res) => {
     try {
-        const upvote = await createUpvote(req.body);
+        let upvoteSubmission = req.body;
+        upvoteSubmission.authorId = req.user.id;
+        const upvote = await createUpvote(upvoteSubmission);
         if (upvote && Object.keys(upvote).length !== 0) {
             return res.status(200).send();
         }
