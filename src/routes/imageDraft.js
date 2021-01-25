@@ -33,7 +33,7 @@ router.post("/image-draft", tokenVerification, async (req, res) => {
     if (!dbImageDraft) {
         return res.status(500).send("Error occured");
     }
-    return res.status(200).send(dbImageDraft);
+    return res.status(204).end();
 });
 
 router.delete("/delete-image-draft", tokenVerification, async (req, res) => {
