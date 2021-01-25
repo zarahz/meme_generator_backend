@@ -9,6 +9,7 @@ const { ImageDraft } = require('../model/index');
  */
 const createImageDraft = async (imageDraftObj) => {
     const imageDraft = new ImageDraft(imageDraftObj);
+    await imageDraft.save();
     return imageDraft;
 };
 
@@ -16,7 +17,7 @@ const createImageDraft = async (imageDraftObj) => {
  * READ all entries
  */
 const getAllImageDrafts = async () => {
-    const imageDrafts = await ImageDraft.find({});
+    const imageDrafts = await ImageDraft.find();
     return imageDrafts;
 }
 

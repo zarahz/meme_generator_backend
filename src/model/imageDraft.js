@@ -11,4 +11,5 @@ const ImageDraft = new Schema({
     creationDate: { type: Date },
 })
 
+
 module.exports = model('imageDraft', ImageDraft);
