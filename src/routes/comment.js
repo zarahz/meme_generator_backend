@@ -42,9 +42,10 @@ async function addUserNameToCommentArray(dbComments) {
 };
 
 router.post('/post-comment', tokenVerification, async (req, res) => {
+    let user = (req.cookies.token) && await authenticateUserByJWT(req.cookies.token);
     try {
         let commentSubmission = req.body;
-        commentSubmission.authorId = req.user.id;
+        commentSubmission.authorId = user.id;
         const comment = await createComment(commentSubmission);
         if (comment && Object.keys(comment).length !== 0) {
             return res.status(200).send();
