@@ -1,6 +1,12 @@
 const puppeteer = require('puppeteer');
 const { uuid } = require('uuidv4');
 
+
+const render_simple_meme = async (image_url, top_text, bottom_text, top_x, top_y, bottom_x, bottom_y) => {
+
+}
+
+
 const screenshotWebpage = async (webpage_url) => {
     // code copied from: https://bitsofco.de/using-a-headless-browser-to-capture-page-screenshots/
 
@@ -32,4 +38,4 @@ const screenshotWebpage = async (webpage_url) => {
     }
 };
 
-module.exports = { screenshotWebpage }
+module.exports = { screenshotWebpage, render_simple_meme }
