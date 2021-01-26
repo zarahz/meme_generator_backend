@@ -4,7 +4,7 @@ const multer = require("multer");
 const { v4: uuid } = require('uuid');
 const express = require('express');
 const { createComment, getComments, deleteComment, deleteComments } = require('../lib/comment')
-
+const { authenticateUserByJWT } = require('../lib/user');
 //
 const { getUser } = require('../lib/user');
 const comment = require("../model/comment");
