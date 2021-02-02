@@ -9,6 +9,7 @@ const { getUpvotes } = require('../lib/upvote')
 const { getDownvotes } = require('../lib/downvote');
 const { tokenVerification } = require("./middleware");
 
+
 const router = express.Router();
 
 const handleError = (err, res) => {
@@ -32,6 +33,17 @@ router.get("/memes", async (req, res) => {
 
     return res.status(200).send(betterImageArray);
     //res.sendFile(path.join(__dirname, "./uploads/image.png"));
+});
+
+router.get("/random-meme", async (req, res) => {
+    const dbImages = await getImages({ visibility: "public" });
+    if (!dbImages) {
+        return res.status(500).send("Error occured");
+    }
+    min = Math.ceil(0);
+    max = Math.floor(dbImages.length - 1);
+    image = dbImages[Math.floor(Math.random() * (max - min + 1)) + min];
+    return res.status(200).send(image);
 });
 
 router.get("/user-memes", tokenVerification, async (req, res) => {
