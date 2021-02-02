@@ -1,9 +1,10 @@
-# ignore upload folder (should be a server instance only!)
+# ignore upload folders (should be a server instance only!)
 src/uploads/*
-# keep the uploads folder
-!src/uploads/.gitkeep
-# same for the uploaded templates :)
+src/rendered/*
 src/templates/*
+# keep the uploads folders
+!src/uploads/.gitkeep
+!src/rendered/.gitkeep
 !src/templates/.gitkeep
 
 # Logs

@@ -30,9 +30,16 @@ router.get("/screenshot_webpage", async (req, res) => {
 router.get(
     "/render-simple-meme", async (req, res) => {
         var image_url = req.query.template_image_url;
-        var rendered_image_url = await render_simple_meme(image_url, "HI", "THERE", 30, 30, 30, 200);
-        console.log("render-simple-meme " + image_url);
-        return res.status(200).send({ success: true });
+        var top_text = req.query.top_text;
+        var bottom_text = req.query.bottom_text;
+        var top_x = req.query.top_x
+        var top_y = req.query.top_y
+        var bott_x = req.query.bott_x
+        var bott_y = req.query.bott_y
+        var file_name = await render_simple_meme(image_url, top_text, bottom_text, top_x, top_y, bott_x, bott_y);
+        return res.status(200).send({
+            path: "http://localhost:3000/static-rendered/" + file_name
+        });
     }
 );
 
