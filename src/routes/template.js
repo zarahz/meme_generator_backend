@@ -61,7 +61,7 @@ router.get("/template", async (req, res) => {
 
 
 router.get("/templates", async (req, res) => {
-    const dbTemplates = await getTemplates();
+    const dbTemplates = await getTemplates({ isWebScreenshot: false });
     if (!dbTemplates) {
         return res.status(500).send("Error occured");
     }

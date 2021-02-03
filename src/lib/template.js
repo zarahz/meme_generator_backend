@@ -16,8 +16,8 @@ const createTemplate = async (templateObj) => {
 /**
  * READ all template entries
  */
-const getTemplates = async () => {
-    const templates = await Template.find({});
+const getTemplates = async (queryObject) => {
+    const templates = await Template.find(queryObject);
     return templates;
 };
 
