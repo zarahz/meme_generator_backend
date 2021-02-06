@@ -3,26 +3,22 @@ const { uuid } = require('uuidv4');
 const Jimp = require('jimp');
 
 // Documentation https://www.npmjs.com/package/jimp
-const render_simple_meme = async (image_url, top_text, bottom_text, top_x, top_y, bottom_x, bottom_y) => {
+const render_simple_meme = async (data) => {
     console.log('Doing something...')
     var file_name = get_current_time_string() + "_" + Math.floor(Math.random() * 10) + ".png"
-    Jimp.read(image_url, async (err, image) => {
+    Jimp.read(data.image_url, async (err, image) => {
         if (err) throw err;
-
-        await add_text_to_image(image, top_text, top_x, top_y);
-        await add_text_to_image(image, bottom_text, bottom_x, bottom_y);
+        data.captions.forEach(async caption => {
+            await add_text_to_image(image, caption.text, caption.offsetX, caption.offsetY);
+        });
         image
             .quality(60) // set JPEG quality
             .write('src/rendered/' + file_name); // save
         console.log('saved rendered image to ' + file_name)
-
-
     });
     await sleep(2000);
     // TODO definitely fix this. I am too stupid rn to just return the file_name when the image is done.
     return file_name;
-
-
 }
 
 function sleep(ms) {

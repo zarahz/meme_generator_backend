@@ -8,14 +8,6 @@ const multer = require("multer");
 const { authenticateUserByJWT } = require('../lib/user');
 const { tokenVerification } = require('./middleware');
 
-
-const handleError = (err, res) => {
-    res
-        .status(500)
-        .contentType("text/plain")
-        .end("Oops! Something went wrong!");
-};
-
 router.get("/screenshot_webpage", async (req, res) => {
     const templateData = await screenshotWebpage(req.query.webpage);
 
@@ -27,16 +19,9 @@ router.get("/screenshot_webpage", async (req, res) => {
 
 });
 
-router.get(
+router.post(
     "/render-simple-meme", async (req, res) => {
-        var image_url = req.query.template_image_url;
-        var top_text = req.query.top_text;
-        var bottom_text = req.query.bottom_text;
-        var top_x = req.query.top_x
-        var top_y = req.query.top_y
-        var bott_x = req.query.bott_x
-        var bott_y = req.query.bott_y
-        var file_name = await render_simple_meme(image_url, top_text, bottom_text, top_x, top_y, bott_x, bott_y);
+        var file_name = await render_simple_meme(req.body);
         return res.status(200).send({
             path: "http://localhost:3000/static-rendered/" + file_name
         });
