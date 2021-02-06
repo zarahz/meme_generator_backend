@@ -8,9 +8,9 @@ const render_simple_meme = async (data) => {
     var file_name = get_current_time_string() + "_" + Math.floor(Math.random() * 10) + ".png"
     Jimp.read(data.image_url, async (err, image) => {
         if (err) throw err;
-        data.captions.forEach(async caption => {
-            await add_text_to_image(image, caption.text, caption.offsetX, caption.offsetY);
-        });
+
+        await add_text_to_image(image, data.captions);
+
         image
             .quality(60) // set JPEG quality
             .write('src/rendered/' + file_name); // save
@@ -33,25 +33,21 @@ function get_current_time_string() {
 
 }
 
-async function add_text_to_image(jimp_image, text, x1, y1) {
-    // var text_width = Jimp.measureText(Jimp.FONT_SANS_32_BLACK, 'hmm')
-    // var text_height = Jimp.measureTextHeight(Jimp.FONT_SANS_32_BLACK, "asdf", 100);
-    // console.log("text_width: " + text_width.toString())
-    // console.log("text_height: " + text_height.toString())
-    x = parseInt(x1);
-    y = parseInt(y1);
-    console.log("Printing text " + text + " to: " + x + " x " + y);
+async function add_text_to_image(jimp_image, captions) {
     await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK).then(font => {
-        jimp_image.print(
-            font,
-            x,
-            y,
-            {
-                text: text,
-                alignmentX: Jimp.HORIZONTAL_ALIGN_LEFT,
-                alignmentY: Jimp.VERTICAL_ALIGN_TOP
-            }
-        );
+        captions.forEach(caption => {
+            //Beware bottom text (fromBottom = true in caption) won't show due to negative Y!
+            jimp_image.print(
+                font,
+                caption.offsetX,
+                caption.offsetY,
+                {
+                    text: caption.text,
+                    alignmentX: Jimp.HORIZONTAL_ALIGN_LEFT,
+                    alignmentY: Jimp.VERTICAL_ALIGN_TOP
+                }
+            );
+        });
     });
 }
 
