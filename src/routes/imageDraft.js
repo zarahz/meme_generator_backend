@@ -1,8 +1,9 @@
 const path = require("path");
 const express = require('express');
-const { createImageDraft, getImageDrafts, deleteImageDraft, getAllImageDrafts } = require('../lib/imageDraft')
+const { createImageDraft, getImageDrafts, deleteImageDrafts, getAllImageDrafts } = require('../lib/imageDraft')
 const router = express.Router();
 const { tokenVerification } = require('./middleware');
+const { Caption } = require("../model");
 
 router.get("/all-image-drafts", async (req, res) => {
     const dbImageDrafts = await getAllImageDrafts();
@@ -36,12 +37,8 @@ router.post("/image-draft", tokenVerification, async (req, res) => {
     return res.status(204).end();
 });
 
-router.delete("/delete-image-draft", tokenVerification, async (req, res) => {
-    const dbImageDraft = await deleteImageDraft({ userId: req.user.id });
-    if (!dbImageDraft) {
-        return res.status(500).send("Error occured");
-    }
-
+router.delete("/delete-image-drafts", tokenVerification, async (req, res) => {
+    const dbImageDraft = await deleteImageDrafts({ userId: req.user.id });
     return res.status(200).send({ dbImageDraft });
 });
 

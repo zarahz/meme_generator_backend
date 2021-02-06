@@ -1,4 +1,4 @@
-const { ImageDraft } = require('../model/index');
+const { ImageDraft, Caption } = require('../model/index');
 
 /** CRUD OPERATIONS ON IMAGES */
 
@@ -8,8 +8,21 @@ const { ImageDraft } = require('../model/index');
  * @param {*} imageObj 
  */
 const createImageDraft = async (imageDraftObj) => {
-    const imageDraft = new ImageDraft(imageDraftObj);
-    await imageDraft.save();
+    const imageDraft = new ImageDraft({
+        title: imageDraftObj.title,
+        memeSource: imageDraftObj.memeSource,
+        userId: imageDraftObj.userId,
+        creationDate: imageDraftObj.creationDate
+    });
+    await imageDraft.save(function (err) {
+        if (err) return null;
+        imageDraftObj.captions.forEach(async caption => {
+            delete caption._id;
+            caption.meme = imageDraft.id;
+            const dbCaption = new Caption(caption);
+            await dbCaption.save();
+        });
+    });
     return imageDraft;
 };
 
@@ -17,7 +30,7 @@ const createImageDraft = async (imageDraftObj) => {
  * READ all entries
  */
 const getAllImageDrafts = async () => {
-    const imageDrafts = await ImageDraft.find();
+    const imageDrafts = await ImageDraft.find().populate('captions');
     return imageDrafts;
 }
 
@@ -26,7 +39,7 @@ const getAllImageDrafts = async () => {
  * @param {*} queryObject 
  */
 const getImageDraft = async (queryObject) => {
-    const imageDraft = await ImageDraft.findOne(queryObject);
+    const imageDraft = await ImageDraft.findOne(queryObject).populate('captions');
     return imageDraft;
 };
 
@@ -35,15 +48,15 @@ const getImageDraft = async (queryObject) => {
  * @param {*} queryObject 
  */
 const getImageDrafts = async (queryObject) => {
-    const imageDrafts = await ImageDraft.find(queryObject);
+    const imageDrafts = await ImageDraft.find(queryObject).populate('captions')
     return imageDrafts;
 };
 
 /**
- * DELETE one image entries
+ * DELETE image entries
  */
-const deleteImageDraft = async (queryObject) => {
-    await ImageDraft.deleteOne(queryObject);
+const deleteImageDrafts = async (queryObject) => {
+    await ImageDraft.deleteMany(queryObject);
 };
 
-module.exports = { createImageDraft, getImageDrafts, getImageDraft, deleteImageDraft, getAllImageDrafts }
+module.exports = { createImageDraft, getImageDrafts, getImageDraft, deleteImageDrafts, getAllImageDrafts }

@@ -5,9 +5,11 @@ const Comment = require('./comment');
 const Upvote = require('./upvote');
 const Downvote = require('./downvote');
 const Template = require('./template');
+const Caption = require('./caption');
 
 
 module.exports = {
+    Caption,
     Image,
     ImageDraft,
     User,

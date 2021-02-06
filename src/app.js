@@ -29,7 +29,7 @@ const checkUrl = (origin, callback) => {
 app.use(cors({ credentials: true, origin: checkUrl }));
 
 app.use(cookieParser(config.secret))
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb' }));
 app.options('*', cors());
 
 
