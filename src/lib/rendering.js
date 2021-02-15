@@ -6,9 +6,9 @@ const Jimp = require('jimp');
 const render_simple_meme = async (data) => {
     console.log('Doing something...')
     var file_name = get_current_time_string() + "_" + Math.floor(Math.random() * 10) + ".png"
-    Jimp.read(data.image_url, async (err, image) => {
-        if (err) throw err;
 
+    Jimp.read(data.image_url).then(async image => {
+        console.log("HEIGHT " + image.bitmap.height);
         await add_text_to_image(image, data.captions);
 
         image
@@ -16,8 +16,7 @@ const render_simple_meme = async (data) => {
             .write('src/rendered/' + file_name); // save
         console.log('saved rendered image to ' + file_name)
     });
-    await sleep(2000);
-    // TODO definitely fix this. I am too stupid rn to just return the file_name when the image is done.
+
     return file_name;
 }
 
@@ -34,13 +33,25 @@ function get_current_time_string() {
 }
 
 async function add_text_to_image(jimp_image, captions) {
+
     await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK).then(font => {
         captions.forEach(caption => {
+            let posx = 0;
+            let posy = 0;
+            if (caption.fromBottom) {
+                posx = Math.round(jimp_image.bitmap.width / 2 + caption.offsetX);
+                posy = Math.round(jimp_image.bitmap.height - 30 + caption.offsetX);
+            } else {
+                posx = Math.round(jimp_image.bitmap.width / 2 + caption.offsetX);
+                posy = Math.round(10 + caption.offsetX);
+            }
+
+            console.log(jimp_image.bitmap.width + "x" + jimp_image.bitmap.height + "-> (" + posx + ", " + posy + ")")
             //Beware bottom text (fromBottom = true in caption) won't show due to negative Y!
             jimp_image.print(
                 font,
-                caption.offsetX,
-                caption.offsetY,
+                posx,
+                posy,
                 {
                     text: caption.text,
                     alignmentX: Jimp.HORIZONTAL_ALIGN_LEFT,
