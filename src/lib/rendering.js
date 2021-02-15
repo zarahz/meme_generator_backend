@@ -4,11 +4,9 @@ const Jimp = require('jimp');
 
 // Documentation https://www.npmjs.com/package/jimp
 const render_simple_meme = async (data) => {
-    console.log('Doing something...')
     var file_name = get_current_time_string() + "_" + Math.floor(Math.random() * 10) + ".png"
 
     Jimp.read(data.image_url).then(async image => {
-        console.log("HEIGHT " + image.bitmap.height);
         await add_text_to_image(image, data.captions);
 
         image
@@ -46,7 +44,7 @@ async function add_text_to_image(jimp_image, captions) {
                 posy = Math.round(10 + caption.offsetX);
             }
 
-            console.log(jimp_image.bitmap.width + "x" + jimp_image.bitmap.height + "-> (" + posx + ", " + posy + ")")
+            //console.log(jimp_image.bitmap.width + "x" + jimp_image.bitmap.height + "-> (" + posx + ", " + posy + ")")
             //Beware bottom text (fromBottom = true in caption) won't show due to negative Y!
             jimp_image.print(
                 font,
