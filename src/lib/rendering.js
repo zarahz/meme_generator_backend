@@ -1,25 +1,49 @@
 const puppeteer = require('puppeteer');
 const { uuid } = require('uuidv4');
 const Jimp = require('jimp');
+const fs = require('fs')
 
 // Documentation https://www.npmjs.com/package/jimp
 const render_simple_meme = async (data) => {
-    var file_name = get_current_time_string() + "_" + Math.floor(Math.random() * 10) + ".png"
-
-    Jimp.read(data.image_url).then(async image => {
+    var file_name = get_current_time_string() + "_" + Math.floor(Math.random() * 10) + ".jpg"
+    var quality = 90;
+    await Jimp.read(data.image_url).then(async image => {
         await add_text_to_image(image, data.captions);
+        var path = 'src/rendered/' + file_name;
+        await image.quality(quality).write(path);
 
-        image
-            .quality(60) // set JPEG quality
-            .write('src/rendered/' + file_name); // save
-        console.log('saved rendered image to ' + file_name)
+        var file_size_in_kb = await get_file_size_in_kb(path);
+
+        while (file_size_in_kb > data.max_kilobytes && data.max_kilobytes > 10) {
+            quality = quality - 5;
+            await image.quality(quality).write(path);
+            file_size_in_kb = await get_file_size_in_kb(path);
+        }
     });
 
     return file_name;
 }
 
-function sleep(ms) {
+async function get_file_size_in_kb(path) {
+    // gotta wait for the filesystem to show a change.
+    await sleep(100); // TODO is there a better way?
+    return (await fs.promises.stat(path)).size / 1000;
+}
+
+async function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function findSize() {
+    var fileInput = document.getElementById("fUpload");
+    try {
+        alert(fileInput.files[0].size); // Size returned in bytes.
+    } catch (e) {
+        var objFSO = new ActiveXObject("Scripting.FileSystemObject");
+        var e = objFSO.getFile(fileInput.value);
+        var fileSize = e.size;
+        alert(fileSize);
+    }
 }
 
 function get_current_time_string() {
