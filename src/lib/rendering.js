@@ -18,9 +18,10 @@ const render_simple_meme = async (data) => {
             quality = quality - 5;
             await image.quality(quality).write(path);
             file_size_in_kb = await get_file_size_in_kb(path);
+            console.log("Render quality reduced: " + quality + " new size:" + file_size_in_kb + " max size: " + data.max_kilobytes);
         }
     });
-
+    console.log("Render done");
     return file_name;
 }
 
@@ -62,13 +63,13 @@ async function add_text_to_image(jimp_image, captions) {
             let posy = 0;
             if (caption.fromBottom) {
                 posx = Math.round(jimp_image.bitmap.width / 2 + caption.offsetX);
-                posy = Math.round(jimp_image.bitmap.height - 30 + caption.offsetX);
+                posy = Math.round(jimp_image.bitmap.height - 30 + caption.offsetY);
             } else {
                 posx = Math.round(jimp_image.bitmap.width / 2 + caption.offsetX);
-                posy = Math.round(10 + caption.offsetX);
+                posy = Math.round(10 + caption.offsetY);
             }
 
-            //console.log(jimp_image.bitmap.width + "x" + jimp_image.bitmap.height + "-> (" + posx + ", " + posy + ")")
+            console.log(jimp_image.bitmap.width + "x" + jimp_image.bitmap.height + "-> (" + posx + ", " + posy + ")")
             //Beware bottom text (fromBottom = true in caption) won't show due to negative Y!
             jimp_image.print(
                 font,
