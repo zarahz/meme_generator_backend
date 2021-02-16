@@ -11,7 +11,6 @@ const { v4: uuid } = require('uuid');
  */
 const createDownvote = async (downvoteObj) => {
      await Upvote.deleteOne({ authorId: downvoteObj.authorId, imageId: downvoteObj.imageId })
-    //console.log(upvote)
     const downvote = await Downvote.findOneAndDelete({ authorId: downvoteObj.authorId, imageId: downvoteObj.imageId })
     console.log("downvote" + downvote)
     if (downvote) {
