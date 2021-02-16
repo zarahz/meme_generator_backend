@@ -1,4 +1,5 @@
 const { Upvote } = require('../model/index');
+const { Downvote } = require('../model/index');
 const { v4: uuid } = require('uuid');
 
 /** CRUD OPERATIONS ON Upvote 
@@ -9,6 +10,7 @@ const { v4: uuid } = require('uuid');
  * @param {*} upvoteObj 
  */
 const createUpvote = async (upvoteObj) => {
+    await Downvote.deleteOne({ authorId: upvoteObj.authorId, imageId: upvoteObj.imageId })
     const upvote = await Upvote.findOneAndDelete({ authorId: upvoteObj.authorId, imageId: upvoteObj.imageId })
     //console.log(upvote)
     if (upvote) {
