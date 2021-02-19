@@ -14,13 +14,13 @@ router.get("/upvotes", async (req, res) => {
     return res.status(200).send({ dbUpvotes });
 });
 
-router.post('/post-upvote',tokenVerification, async (req, res) => {
+router.post('/post-upvote', tokenVerification, async (req, res) => {
     try {
         let upvoteSubmission = req.body;
         upvoteSubmission.authorId = req.user.id;
         const upvote = await createUpvote(upvoteSubmission);
         if (upvote && Object.keys(upvote).length !== 0) {
-            return res.status(200).send();
+            return res.status(200).send(upvote);
         }
     } catch (error) {
         return res.status(500).send({ error: error.message });

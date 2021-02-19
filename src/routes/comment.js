@@ -48,7 +48,7 @@ router.post('/post-comment', tokenVerification, async (req, res) => {
         commentSubmission.authorId = user.id;
         const comment = await createComment(commentSubmission);
         if (comment && Object.keys(comment).length !== 0) {
-            return res.status(200).send();
+            return res.status(200).send(comment);
         }
     } catch (error) {
         return res.status(500).send({ error: error.message });

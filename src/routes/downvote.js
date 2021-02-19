@@ -1,5 +1,5 @@
 const express = require('express');
-const { createDownvote, getDownvotes, deleteDownvote} = require('../lib/downvote');
+const { createDownvote, getDownvotes, deleteDownvote } = require('../lib/downvote');
 const { tokenVerification } = require('./middleware');
 const router = express.Router();
 
@@ -18,7 +18,7 @@ router.post('/post-downvote', tokenVerification, async (req, res) => {
         downvoteSubmission.authorId = req.user.id;
         const downvote = await createDownvote(downvoteSubmission);
         if (downvote && Object.keys(downvote).length !== 0) {
-            return res.status(200).send();
+            return res.status(200).send(downvote);
         }
     } catch (error) {
         return res.status(500).send({ error: error.message });
