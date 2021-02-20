@@ -5,6 +5,7 @@ const Comment = require('./comment');
 const Upvote = require('./upvote');
 const Downvote = require('./downvote');
 const Template = require('./template');
+const { MemeStats, TemplateStats } = require('./stats');
 const Caption = require('./caption');
 
 
@@ -16,5 +17,7 @@ module.exports = {
     Comment,
     Upvote,
     Downvote,
-    Template
+    Template,
+    TemplateStats,
+    MemeStats
 };

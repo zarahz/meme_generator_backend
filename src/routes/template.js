@@ -3,7 +3,8 @@ const { promises: fs } = require("fs");
 const multer = require("multer");
 const { v4: uuid } = require('uuid');
 const express = require('express');
-const { createTemplate, getTemplates, deleteTemplates, getTemplate } = require('../lib/template')
+const { createTemplate, getTemplates, deleteTemplates, getTemplate } = require('../lib/template');
+const { createOrUpdateMultipleTemplateStatisticViewed, getTemplateStatistics } = require('../lib/Stats');
 const router = express.Router();
 
 const handleError = (err, res) => {
@@ -58,8 +59,6 @@ router.get("/template", async (req, res) => {
     return res.status(200).send({ template });
 });
 
-
-
 router.get("/templates", async (req, res) => {
     const dbTemplates = await getTemplates({ isWebScreenshot: false });
     if (!dbTemplates) {
@@ -78,6 +77,5 @@ router.get("/delete-templates", async (req, res) => {
     //TODO empty upload folder too!
     return res.status(200).send(`Deleted ${dbTemplates.deletedCount} templates`);
 });
-
 
 module.exports = router;

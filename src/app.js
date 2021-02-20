@@ -62,6 +62,9 @@ app.use(require('./routes/memes'));
 app.use(require('./routes/template'));
 // rendering API
 app.use(require('./routes/rendering'));
+// Statistics!
+app.use("/stats", require('./routes/stats'));
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
