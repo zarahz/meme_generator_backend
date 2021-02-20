@@ -3,39 +3,37 @@ const { TemplateStats, MemeStats } = require('../model/index');
 /** CRUD OPERATIONS ON TEMPLATES */
 
 /**
- * CREATE
- * 
- * @param {*} templateObj 
- */
-const createOrUpdateTemplateStatistic = async (templateStats) => {
-    const url = templateStats.url;
-    delete templateStats.url;
-
-    const dbTemplateStats = await TemplateStats.findOneAndUpdate({ url: url }, { $inc: templateStats }, { new: true, upsert: true })
-
-    await dbTemplateStats.save();
-    return dbTemplateStats;
-};
-
-/**
- * CREATE/UPDATE chosen stats
+ * UPDATE chosen stats
  * 
  * @param {*} url 
  */
 const updateTemplateStatisticChosen = async (url) => {
-    const dbTemplateStats = await TemplateStats.findOneAndUpdate({ url }, { $inc: { chosen: 1 } }, { new: true, upsert: true })
+    const dbTemplateStats = await TemplateStats.findOneAndUpdate({ url }, { $inc: { chosen: 1 } }, { new: true })
 
     await dbTemplateStats.save();
     return dbTemplateStats;
 };
 
 /**
- * CREATE/UPDATE gereated stats
+ * UPDATE viewedAfterCreation stats
+ * 
+ * @param {*} url 
+ */
+const updateTemplateStatisticViewedAfterCreation = async (memes) => {
+    return Promise.all(memes.map(meme => {
+        if (meme.template) {
+            return TemplateStats.findOneAndUpdate({ url: meme.template }, { $inc: { viewedAfterCreation: 1 } }, { new: true }).exec()
+        }
+    }));
+};
+
+/**
+ * UPDATE generated stats
  * 
  * @param {*} url 
  */
 const updateTemplateStatisticGenerated = async (url) => {
-    const dbTemplateStats = await TemplateStats.findOneAndUpdate({ url }, { $inc: { generated: 1 } }, { new: true, upsert: true })
+    const dbTemplateStats = await TemplateStats.findOneAndUpdate({ url }, { $inc: { generated: 1 } }, { new: true })
 
     await dbTemplateStats.save();
     return dbTemplateStats;
@@ -60,35 +58,38 @@ const getTemplateStatistics = async () => {
     return templates;
 };
 
+
+/** --------- MEME STASTS ------------- */
 /**
- * READ one template entry
- * @param {*} queryObject 
+ * READ all meme entries
  */
-const getTemplateStatistic = async (queryObject) => {
-    const template = await TemplateStats.findOne(queryObject);
-    if (!template) { return -1; } // error code -1 is returned for no template found
-    return template;
+const getMemeStatistics = async () => {
+    const memes = await MemeStats.find({});
+    return memes;
 };
 
 /**
- * READ multiple template entries
- * @param {*} queryObject 
+ * CREATE/UPDATE multiple viewed stats
+ * 
+ * @param {*} memeObj 
  */
-const getMultipleTemplateStatistics = async (queryObjects) => {
-    //TODO 
-    let templateStatistics = [];
-    queryObjects.forEach(async template => {
-        const statistic = await TemplateStats.findOne(template);
-        (statistic) && templateStatistics.push(statistic);
-    })
-
+const createOrUpdateMultipleMemeStatisticViewed = async (memes) => {
+    return Promise.all(memes.map(meme =>
+        MemeStats.findOneAndUpdate({ memeId: meme._id }, { $inc: { viewed: 1 } }, { new: true, upsert: true }).exec())
+    );
 };
+
+const deleteAllMemeStatistics = async () => {
+    await MemeStats.deleteMany({});
+}
 
 module.exports = {
+    createOrUpdateMultipleTemplateStatisticViewed,
     updateTemplateStatisticChosen,
     updateTemplateStatisticGenerated,
-    createOrUpdateMultipleTemplateStatisticViewed,
+    updateTemplateStatisticViewedAfterCreation,
     getTemplateStatistics,
-    getTemplateStatistic,
-    getMultipleTemplateStatistics
+    createOrUpdateMultipleMemeStatisticViewed,
+    deleteAllMemeStatistics,
+    getMemeStatistics
 }

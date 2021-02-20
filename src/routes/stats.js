@@ -1,6 +1,14 @@
 
 const { Router } = require('express');
-const { getTemplateStatistics, createOrUpdateMultipleTemplateStatisticViewed, updateTemplateStatisticChosen, updateTemplateStatisticGenerated } = require('../lib/Stats');
+const {
+    getTemplateStatistics,
+    createOrUpdateMultipleTemplateStatisticViewed,
+    updateTemplateStatisticChosen,
+    updateTemplateStatisticViewedAfterCreation,
+    createOrUpdateMultipleMemeStatisticViewed,
+    deleteAllMemeStatistics,
+    getMemeStatistics
+} = require('../lib/Stats');
 
 const router = Router();
 
@@ -24,10 +32,35 @@ router.post('/templates/chosen', async (req, res) => {
     return res.status(200).send(statistics);
 });
 
-router.post('/templates/generated', async (req, res) => {
-    let template = req.body;
-    await updateTemplateStatisticGenerated(template.url);
+router.post('/templates/viewed-after-creation', async (req, res) => {
+    let memes = req.body;
+    const statistics = await updateTemplateStatisticViewedAfterCreation(memes);
+    return res.status(200).send(statistics);
+});
+
+
+
+// ----------- MEMES
+router.get('/memes', async (req, res) => {
+    const statistics = await getMemeStatistics();
+    if (statistics) {
+        return res.status(200).send(statistics);
+    }
+    return res.status(500).send({ error: 'error' });
+});
+
+router.post('/memes/viewed', async (req, res) => {
+    let memes = req.body;
+    const statistics = await createOrUpdateMultipleMemeStatisticViewed(memes);
+    return res.status(200).send(statistics);
+});
+
+
+router.get('/memes/delete-all', async (req, res) => {
+    await deleteAllMemeStatistics();
     return res.status(204).end();
 });
+
+
 
 module.exports = router

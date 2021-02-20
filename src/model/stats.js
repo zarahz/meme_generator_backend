@@ -11,10 +11,9 @@ const TemplateStats = new Schema({
 });
 
 const MemeStats = new Schema({
-    url: { type: String, required: true, unique: true }, // the unique indicator here
+    memeId: { type: String, required: true, unique: true }, // the unique indicator here
     viewed: { type: Number, default: 0 },
-    upvoted: { type: Number, default: 0 },
-    downvoted: { type: Number, default: 0 }
+    //TODO up votes/views over time?
 });
 
 module.exports = {
