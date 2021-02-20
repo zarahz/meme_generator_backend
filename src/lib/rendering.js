@@ -14,8 +14,11 @@ const render_simple_meme = async (data) => {
 
         var file_size_in_kb = await get_file_size_in_kb(path);
 
-        while (file_size_in_kb > data.max_kilobytes && data.max_kilobytes > 10) {
+        while (file_size_in_kb > data.max_kilobytes && data.max_kilobytes > 0) {
             quality = quality - 5;
+            if (quality < 1) {
+                return file_name;
+            }
             await image.quality(quality).write(path);
             file_size_in_kb = await get_file_size_in_kb(path);
             console.log("Render quality reduced: " + quality + " new size:" + file_size_in_kb + " max size: " + data.max_kilobytes);
