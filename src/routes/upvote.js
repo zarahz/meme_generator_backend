@@ -1,4 +1,5 @@
 const express = require('express');
+const { updateTemplateStatisticUpvoted } = require('../lib/Stats');
 const { createUpvote, getUpvotes, deleteUpvote } = require('../lib/upvote')
 const { tokenVerification } = require("./middleware");
 const router = express.Router();
@@ -19,6 +20,7 @@ router.post('/post-upvote', tokenVerification, async (req, res) => {
         let upvoteSubmission = req.body;
         upvoteSubmission.authorId = req.user.id;
         const upvote = await createUpvote(upvoteSubmission);
+        await updateTemplateStatisticUpvoted(upvote.imageId);
         if (upvote && Object.keys(upvote).length !== 0) {
             return res.status(200).send(upvote);
         }

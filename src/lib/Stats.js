@@ -1,4 +1,5 @@
 const { TemplateStats, MemeStats } = require('../model/index');
+const { getImage } = require('./image');
 
 /** CRUD OPERATIONS ON TEMPLATES */
 
@@ -37,6 +38,36 @@ const updateTemplateStatisticGenerated = async (url) => {
 
     await dbTemplateStats.save();
     return dbTemplateStats;
+};
+
+/**
+ * UPDATE upvoted stats
+ * 
+ * @param {*} url 
+ */
+const updateTemplateStatisticUpvoted = async (memeId) => {
+    const meme = await getImage({ '_id': memeId });
+    if (meme) {
+        const dbTemplateStats = await TemplateStats.findOneAndUpdate({ url: meme.template }, { $inc: { upvoted: 1 } }, { new: true })
+
+        await dbTemplateStats.save();
+        return dbTemplateStats;
+    }
+};
+
+/**
+ * UPDATE downvoted stats
+ * 
+ * @param {*} url 
+ */
+const updateTemplateStatisticDownvoted = async (memeId) => {
+    const meme = await getImage({ '_id': memeId });
+    if (meme) {
+        const dbTemplateStats = await TemplateStats.findOneAndUpdate({ url: meme.template }, { $inc: { downvoted: 1 } }, { new: true })
+
+        await dbTemplateStats.save();
+        return dbTemplateStats;
+    }
 };
 
 /**
@@ -87,6 +118,8 @@ module.exports = {
     createOrUpdateMultipleTemplateStatisticViewed,
     updateTemplateStatisticChosen,
     updateTemplateStatisticGenerated,
+    updateTemplateStatisticUpvoted,
+    updateTemplateStatisticDownvoted,
     updateTemplateStatisticViewedAfterCreation,
     getTemplateStatistics,
     createOrUpdateMultipleMemeStatisticViewed,
