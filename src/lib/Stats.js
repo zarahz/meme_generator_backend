@@ -23,7 +23,7 @@ const updateTemplateStatisticChosen = async (url) => {
 const updateTemplateStatisticViewedAfterCreation = async (memes) => {
     return Promise.all(memes.map(meme => {
         if (meme.template) {
-            return TemplateStats.findOneAndUpdate({ url: meme.template }, { $inc: { viewedAfterCreation: 1 } }, { new: true }).exec()
+            return TemplateStats.findOneAndUpdate({ url: meme.template }, { $push: { viewedAfterCreation: new Date() } }, { new: true }).exec()
         }
     }));
 };
@@ -34,7 +34,7 @@ const updateTemplateStatisticViewedAfterCreation = async (memes) => {
  * @param {*} url 
  */
 const updateTemplateStatisticGenerated = async (url) => {
-    const dbTemplateStats = await TemplateStats.findOneAndUpdate({ url }, { $inc: { generated: 1 } }, { new: true })
+    const dbTemplateStats = await TemplateStats.findOneAndUpdate({ url }, { $push: { generated: new Date() } }, { new: true })
 
     await dbTemplateStats.save();
     return dbTemplateStats;
@@ -106,7 +106,7 @@ const getMemeStatistics = async () => {
  */
 const createOrUpdateMultipleMemeStatisticViewed = async (memes) => {
     return Promise.all(memes.map(meme =>
-        MemeStats.findOneAndUpdate({ memeId: meme._id }, { $inc: { viewed: 1 } }, { new: true, upsert: true }).exec())
+        MemeStats.findOneAndUpdate({ memeId: meme._id }, { $push: { viewed: new Date() } }, { new: true, upsert: true }).exec())
     );
 };
 
