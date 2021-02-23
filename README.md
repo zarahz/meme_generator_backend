@@ -32,3 +32,9 @@ sudo systemctl stop mongod
 sudo systemctl restart mongod
 
 ```
+On Macbook OS
+
+```
+brew services start mongodb-community
+brew services stop mongodb-community
+```

@@ -28,6 +28,13 @@ const render_simple_meme = async (data) => {
     return file_name;
 }
 
+function zipFiles() {
+    var zip = new require('node-zip')();
+    zip.file('test.file', 'zip file');
+    var data = zip.generate({base64:false,compression:'DEFLATE'});
+    console.log(data); // ugly data
+}   
+
 async function get_file_size_in_kb(path) {
     // gotta wait for the filesystem to show a change.
     await sleep(100); // TODO is there a better way?
