@@ -7,7 +7,8 @@ const {
     updateTemplateStatisticViewedAfterCreation,
     createOrUpdateMultipleMemeStatisticViewed,
     deleteAllMemeStatistics,
-    getMemeStatistics
+    getMemeStatistics,
+    deleteAllTemplateStatistics
 } = require('../lib/Stats');
 
 const router = Router();
@@ -38,6 +39,10 @@ router.post('/templates/viewed-after-creation', async (req, res) => {
     return res.status(200).send(statistics);
 });
 
+router.get('/templates/delete-all', async (req, res) => {
+    await deleteAllTemplateStatistics();
+    return res.status(204).end();
+});
 
 
 // ----------- MEMES

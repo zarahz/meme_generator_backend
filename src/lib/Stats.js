@@ -76,9 +76,13 @@ const updateTemplateStatisticDownvoted = async (memeId) => {
  * @param {*} templateObj 
  */
 const createOrUpdateMultipleTemplateStatisticViewed = async (templates) => {
-    return Promise.all(templates.map(template =>
-        TemplateStats.findOneAndUpdate({ url: template.url }, { $inc: { viewed: 1 } }, { new: true, upsert: true }).exec())
-    );
+    return Promise.all(templates.map(template => {
+       
+         return TemplateStats.findOneAndUpdate({ url: template.url }, { $inc: { viewed: 1 } }, { new: true, upsert: true }).exec()
+
+     
+    }
+   ));
 };
 
 /**
@@ -88,7 +92,9 @@ const getTemplateStatistics = async () => {
     const templates = await TemplateStats.find({});
     return templates;
 };
-
+const deleteAllTemplateStatistics = async () => {
+    await TemplateStats.deleteMany({});
+}
 
 /** --------- MEME STASTS ------------- */
 /**
@@ -124,5 +130,6 @@ module.exports = {
     getTemplateStatistics,
     createOrUpdateMultipleMemeStatisticViewed,
     deleteAllMemeStatistics,
-    getMemeStatistics
+    getMemeStatistics,
+    deleteAllTemplateStatistics
 }
