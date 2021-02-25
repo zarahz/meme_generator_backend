@@ -28,11 +28,12 @@ const render_simple_meme = async (data) => {
     return file_name;
 }
 
-function zipFiles() {
+async function zipFile(file) {
     var zip = new require('node-zip')();
     zip.file('test.file', 'zip file');
     var data = zip.generate({base64:false,compression:'DEFLATE'});
-    console.log(data); // ugly data
+    console.log(data); // Debug
+    return data;
 }   
 
 async function get_file_size_in_kb(path) {
@@ -126,4 +127,4 @@ const screenshotWebpage = async (webpage_url) => {
     }
 };
 
-module.exports = { screenshotWebpage, render_simple_meme }
+module.exports = { screenshotWebpage, render_simple_meme, zipFile}

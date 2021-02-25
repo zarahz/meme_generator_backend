@@ -19,6 +19,16 @@ router.get("/screenshot_webpage", async (req, res) => {
 
 });
 
+router.post("/zipfile", async(req, res) => {
+    const zipfile = await zipFile(req.query.webpage); 
+    if (!zipFile) {
+        return res.status(500).send("Error occured");
+    }
+    return res.status(200).send({
+        path: "http://localhost:3000/static-rendered/" + zipfile
+    })
+});
+
 router.post(
     "/render-simple-meme", async (req, res) => {
         var file_name = await render_simple_meme(req.body);
