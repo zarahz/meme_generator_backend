@@ -24,14 +24,14 @@ router.post(
     upload.single("templatefile" /* name attribute of <file> element in your form */),
     async (req, res) => {
         const tempPath = req.file.path;
-        let tags = req.body.tags;
+        let name = req.body.name;
         let fileName = uuid();
         const fileType = path.extname(req.file.originalname).toLowerCase();
         let url = ("http://localhost:3000/static-templates/" + fileName + fileType);
 
         const templateData = {
             fileName,
-            tags,
+            name,
             url,
             fileType,
             nameAndFileType: fileName + fileType,
