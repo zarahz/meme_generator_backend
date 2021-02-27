@@ -1,4 +1,4 @@
-const { screenshotWebpage, render_simple_meme } = require('../lib/rendering');
+const { screenshotWebpage, render_simple_meme, zipFile } = require('../lib/rendering');
 const { createTemplate } = require('../lib/template')
 const path = require("path");
 const { promises: fs } = require("fs");
@@ -19,9 +19,9 @@ router.get("/screenshot_webpage", async (req, res) => {
 
 });
 
-router.post("/zipfile", async(req, res) => {
-    const zipfile = await zipFile(req.query.webpage); 
-    if (!zipFile) {
+router.get("/zipfile", async (req, res) => {
+    const zipfile = await zipFile(req.query.searchterm);
+    if (!zipfile) {
         return res.status(500).send("Error occured");
     }
     return res.status(200).send({
