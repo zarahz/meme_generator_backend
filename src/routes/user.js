@@ -19,7 +19,7 @@ router.post('/is-unique', async (req, res) => {
         const uniqueValue = await isUnique(field, value);
 
         if (uniqueValue) {
-            return res.status(200).end();
+            return res.status(204).end();
         }
 
         return res.status(400).send({ error: `${field.replace(/\b\w/g, l => l.toUpperCase())} with the value '${value}' already exists! Please try something else.` });
