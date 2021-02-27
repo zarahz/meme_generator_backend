@@ -1,7 +1,9 @@
 const puppeteer = require('puppeteer');
 const { uuid } = require('uuidv4');
 const Jimp = require('jimp');
-const fs = require('fs')
+const fs = require('fs');
+const { getImages } = require('../lib/image');
+const nodezip = require('node-zip');
 
 // Documentation https://www.npmjs.com/package/jimp
 const render_simple_meme = async (data) => {
@@ -28,17 +30,36 @@ const render_simple_meme = async (data) => {
     return file_name;
 }
 
-async function zipFile(file) {
-    var zip = new require('node-zip')();
-    zip.file('test.file', 'zip file');
-    var data = zip.generate({base64:false,compression:'DEFLATE'});
-    console.log(data); // Debug
-    return data;
-}   
+const zipFile = async (data) => {
+    var zip_file_name = "ZIP_" + get_current_time_string() + "_" + Math.floor(Math.random() * 10) + ".zip"
+    var zip_path = "src/rendered/" + zip_file_name;
+
+    var zip = new nodezip();
+
+    const dbImages = await getImages();
+    if (!dbImages) {
+        console.log("no images");
+    } else {
+        dbImages.forEach(element => {
+            if (element.title.toLowerCase().includes(data.toLowerCase())) {
+                console.log("zipping " + element.path);
+                let data = fs.readFileSync(element.path)
+                zip.file(element.nameAndFileType, data);
+            }
+
+        });
+    }
+
+    // zip and write to file
+    var data = zip.generate({ base64: false, compression: 'DEFLATE' });
+    console.log("writing to path: " + zip_path);
+    fs.writeFileSync(zip_path, data, 'binary');
+    return zip_file_name;
+}
 
 async function get_file_size_in_kb(path) {
     // gotta wait for the filesystem to show a change.
-    await sleep(100); // TODO is there a better way?
+    await sleep(100);
     return (await fs.promises.stat(path)).size / 1000;
 }
 
@@ -127,4 +148,4 @@ const screenshotWebpage = async (webpage_url) => {
     }
 };
 
-module.exports = { screenshotWebpage, render_simple_meme, zipFile}
+module.exports = { screenshotWebpage, render_simple_meme, zipFile }
