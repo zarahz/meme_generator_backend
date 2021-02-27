@@ -34,10 +34,12 @@ const updateTemplateStatisticViewedAfterCreation = async (memes) => {
  * @param {*} url 
  */
 const updateTemplateStatisticGenerated = async (url) => {
-    const dbTemplateStats = await TemplateStats.findOneAndUpdate({ url }, { $push: { generated: new Date() } }, { new: true })
+    if (url) {
+        const dbTemplateStats = await TemplateStats.findOneAndUpdate({ url }, { $push: { generated: new Date() } }, { new: true })
 
-    await dbTemplateStats.save();
-    return dbTemplateStats;
+        await dbTemplateStats.save();
+        return dbTemplateStats;
+    }
 };
 
 /**
@@ -47,7 +49,7 @@ const updateTemplateStatisticGenerated = async (url) => {
  */
 const updateTemplateStatisticUpvoted = async (memeId) => {
     const meme = await getImage({ '_id': memeId });
-    if (meme) {
+    if (meme && meme.template) {
         const dbTemplateStats = await TemplateStats.findOneAndUpdate({ url: meme.template }, { $inc: { upvoted: 1 } }, { new: true })
 
         await dbTemplateStats.save();
@@ -62,7 +64,7 @@ const updateTemplateStatisticUpvoted = async (memeId) => {
  */
 const updateTemplateStatisticDownvoted = async (memeId) => {
     const meme = await getImage({ '_id': memeId });
-    if (meme) {
+    if (meme && meme.template) {
         const dbTemplateStats = await TemplateStats.findOneAndUpdate({ url: meme.template }, { $inc: { downvoted: 1 } }, { new: true })
 
         await dbTemplateStats.save();
@@ -77,12 +79,11 @@ const updateTemplateStatisticDownvoted = async (memeId) => {
  */
 const createOrUpdateMultipleTemplateStatisticViewed = async (templates) => {
     return Promise.all(templates.map(template => {
-       
-         return TemplateStats.findOneAndUpdate({ url: template.url }, { $inc: { viewed: 1 } }, { new: true, upsert: true }).exec()
-
-     
+        if (template.url) {
+            return TemplateStats.findOneAndUpdate({ url: template.url }, { $inc: { viewed: 1 } }, { new: true, upsert: true }).exec()
+        }
     }
-   ));
+    ));
 };
 
 /**
