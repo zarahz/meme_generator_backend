@@ -21,5 +21,5 @@ yarn serve
 or
 ```
 npm install
-npm run build
+npm run serve
 ```
