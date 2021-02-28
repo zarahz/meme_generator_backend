@@ -2,24 +2,21 @@
 
 This is the backend of the university project Meme Generator of the OMM course at the Ludwig-Maximilians-Universität München.
 
-The frontend can be found [here](https://github.com/zarahz/meme_generator/)
-
-
 ### Requirements
-- nodejs
-- yarn or npm
-- mongoDB (see: https://docs.mongodb.com/manual/administration/install-community/ )
+- docker
+- docker-compose
 
-### Run project with
+Pull both repositories, this and the corresponding [frontend](https://github.com/zarahz/meme_generator/). Make sure, that the projects are in the same folder.
+```
+.
+└── parent-folder/
+    ├── /meme_generator
+    └── /meme_generator_backend 
+```
 
-Make sure mongodb is running then:
+## How to Run
 
+Open a terminal inside the meme_generator_backend folder. Here you can execute docker to run the projects.
 ```
-yarn install
-yarn serve
-```
-or
-```
-npm install
-npm run serve
+docker-compose.exe up
 ```
