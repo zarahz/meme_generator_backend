@@ -18,10 +18,6 @@ const updateTemplateStatisticChosen = async (url) => {
     return null;
 };
 
-const checkTemplateSource = (template) => {
-    return template && !template.includes("blob:") && !template.includes('data:')
-}
-
 /**
  * UPDATE viewedAfterCreation stats
  * 
@@ -29,7 +25,7 @@ const checkTemplateSource = (template) => {
  */
 const updateTemplateStatisticViewedAfterCreation = async (memes) => {
     return Promise.all(memes.map(meme => {
-        if (checkTemplateSource(meme.template)) {
+        if (meme && meme.template) {
             return TemplateStats.findOneAndUpdate({ url: meme.template }, { $push: { viewedAfterCreation: new Date() } }, { new: true, upsert: true }).exec()
         }
     }));
