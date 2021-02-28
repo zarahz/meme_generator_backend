@@ -30,7 +30,7 @@ const render_simple_meme = async (data) => {
     return file_name;
 }
 
-const zipFile = async (data) => {
+const zipFile = async (searchTerm, maxImages) => {
     var zip_file_name = "ZIP_" + get_current_time_string() + "_" + Math.floor(Math.random() * 10) + ".zip"
     var zip_path = "src/rendered/" + zip_file_name;
 
@@ -40,13 +40,14 @@ const zipFile = async (data) => {
     if (!dbImages) {
         console.log("no images");
     } else {
+        var includedImages = 0;
         dbImages.forEach(element => {
-            if (element.title.toLowerCase().includes(data.toLowerCase())) {
+            if (element.title.toLowerCase().includes(searchTerm.toLowerCase()) && includedImages < maxImages) {
                 console.log("zipping " + element.path);
                 let data = fs.readFileSync(element.path)
-                zip.file(element.nameAndFileType, data);
+                zip.file("meme_" + includedImages + element.fileType, data);
+                includedImages++;
             }
-
         });
     }
 
