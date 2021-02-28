@@ -9,7 +9,7 @@ services:
       - ./src/rendered:/code/src/rendered
   frontend:
     build:
-      context: ../meme_generator/meme_generator
+      context: ../meme_generator
     ports: 
       - 8080:5000
   mongodb:
