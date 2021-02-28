@@ -2,6 +2,9 @@
 
 This is the backend of the university project Meme Generator of the OMM course at the Ludwig-Maximilians-Universität München.
 
+The frontend can be found [here](https://github.com/zarahz/meme_generator/)
+
+
 ### Requirements
 - nodejs
 - yarn or npm
