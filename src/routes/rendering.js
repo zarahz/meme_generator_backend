@@ -20,7 +20,7 @@ router.get("/screenshot_webpage", async (req, res) => {
 });
 
 router.get("/zipfile", async (req, res) => {
-    const zipfile = await zipFile(req.query.searchterm);
+    const zipfile = await zipFile(req.query.searchterm, req.query.maxImages);
     if (!zipfile) {
         return res.status(500).send("Error occured");
     }

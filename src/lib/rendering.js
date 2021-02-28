@@ -30,7 +30,7 @@ const render_simple_meme = async (data) => {
     return file_name;
 }
 
-const zipFile = async (data) => {
+const zipFile = async (searchTerm, maxImages) => {
     var zip_file_name = "ZIP_" + get_current_time_string() + "_" + Math.floor(Math.random() * 10) + ".zip"
     var zip_path = "src/rendered/" + zip_file_name;
 
@@ -40,13 +40,14 @@ const zipFile = async (data) => {
     if (!dbImages) {
         console.log("no images");
     } else {
+        var includedImages = 0;
         dbImages.forEach(element => {
-            if (element.title.toLowerCase().includes(data.toLowerCase())) {
+            if (element.title.toLowerCase().includes(searchTerm.toLowerCase()) && includedImages < maxImages) {
                 console.log("zipping " + element.path);
                 let data = fs.readFileSync(element.path)
-                zip.file(element.nameAndFileType, data);
+                zip.file("meme_" + includedImages + element.fileType, data);
+                includedImages++;
             }
-
         });
     }
 
@@ -90,14 +91,16 @@ function get_current_time_string() {
 async function add_text_to_image(jimp_image, captions) {
 
     await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK).then(font => {
+
         captions.forEach(caption => {
+            halfTextWidth = Jimp.measureText(font, caption.text) / 2;
             let posx = 0;
             let posy = 0;
             if (caption.fromBottom) {
-                posx = Math.round(jimp_image.bitmap.width / 2 + caption.offsetX);
+                posx = Math.round(jimp_image.bitmap.width / 2 + caption.offsetX - halfTextWidth);
                 posy = Math.round(jimp_image.bitmap.height - 30 + caption.offsetY);
             } else {
-                posx = Math.round(jimp_image.bitmap.width / 2 + caption.offsetX);
+                posx = Math.round(jimp_image.bitmap.width / 2 + caption.offsetX - halfTextWidth);
                 posy = Math.round(10 + caption.offsetY);
             }
 
