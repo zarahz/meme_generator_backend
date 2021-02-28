@@ -90,14 +90,16 @@ function get_current_time_string() {
 async function add_text_to_image(jimp_image, captions) {
 
     await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK).then(font => {
+
         captions.forEach(caption => {
+            halfTextWidth = Jimp.measureText(font, caption.text) / 2;
             let posx = 0;
             let posy = 0;
             if (caption.fromBottom) {
-                posx = Math.round(jimp_image.bitmap.width / 2 + caption.offsetX);
+                posx = Math.round(jimp_image.bitmap.width / 2 + caption.offsetX - halfTextWidth);
                 posy = Math.round(jimp_image.bitmap.height - 30 + caption.offsetY);
             } else {
-                posx = Math.round(jimp_image.bitmap.width / 2 + caption.offsetX);
+                posx = Math.round(jimp_image.bitmap.width / 2 + caption.offsetX - halfTextWidth);
                 posy = Math.round(10 + caption.offsetY);
             }
 
