@@ -16,6 +16,7 @@
     "uuidv4": "^6.2.5"
   },
   "scripts": {
-    "serve": "nodemon ./src/app.js"
+    "serve": "nodemon ./src/app.js",
+    "start": "node ./src/app.js"
   }
 }

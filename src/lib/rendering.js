@@ -121,7 +121,9 @@ const screenshotWebpage = async (webpage_url) => {
     // code copied from: https://bitsofco.de/using-a-headless-browser-to-capture-page-screenshots/
 
     // 1. Launch the browser
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+        args: ["--no-sandbox", "--disable-dev-shm-usage"]
+    });
     // 2. Open a new page
     const page = await browser.newPage();
     // 3. Navigate to URL

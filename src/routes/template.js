@@ -40,7 +40,7 @@ router.post(
         const targetPath = path.join(__dirname, "../templates/" + templateData.nameAndFileType);
         templateData.path = targetPath;
 
-        await fs.rename(tempPath, targetPath);
+        await fs.copyFile(tempPath, targetPath);
         const dbTemplate = await createTemplate(templateData)
         if (!dbTemplate) {
             return res.status(500).send("Error occured");

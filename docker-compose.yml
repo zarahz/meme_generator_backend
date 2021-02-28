@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  backend:
+    build: .
+    ports:
+      - 3000:3000
+    volumes: 
+      - ./src/uploads:/code/src/uploads
+      - ./src/rendered:/code/src/rendered
+  frontend:
+    build:
+      context: ../meme_generator/meme_generator
+    ports: 
+      - 8080:5000
+  mongodb:
+    image: mongo:latest

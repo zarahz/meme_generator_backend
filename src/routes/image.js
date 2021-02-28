@@ -48,7 +48,7 @@ router.post(
         const targetPath = path.join(__dirname, "../uploads/" + imageData.nameAndFileType);
         imageData.path = targetPath;
 
-        await fs.rename(tempPath, targetPath);
+        await fs.copyFile(tempPath, targetPath);
         const dbImage = await createImage(imageData)
         if (!dbImage) {
             return res.status(500).send("Error occured");

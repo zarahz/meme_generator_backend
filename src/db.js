@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 require('./model');
 
 // connect to the database
-mongoose.connect('mongodb://127.0.0.1/meme_generator_db', {
+mongoose.connect('mongodb://mongodb/meme_generator_db', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
