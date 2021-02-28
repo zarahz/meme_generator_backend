@@ -15,6 +15,10 @@ const updateTemplateStatisticChosen = async (url) => {
     return dbTemplateStats;
 };
 
+const checkTemplateSource = (template) => {
+    return template && !template.includes("blob:") && !template.includes('data:')
+}
+
 /**
  * UPDATE viewedAfterCreation stats
  * 
@@ -22,7 +26,7 @@ const updateTemplateStatisticChosen = async (url) => {
  */
 const updateTemplateStatisticViewedAfterCreation = async (memes) => {
     return Promise.all(memes.map(meme => {
-        if (meme.template && !meme.template.includes("blob:http://localhost:8080") || !meme.template.includes('data:image/jpeg')) {
+        if (checkTemplateSource(meme.template)) {
             return TemplateStats.findOneAndUpdate({ url: meme.template }, { $push: { viewedAfterCreation: new Date() } }, { new: true }).exec()
         }
     }));
@@ -49,7 +53,7 @@ const updateTemplateStatisticGenerated = async (url) => {
  */
 const updateTemplateStatisticUpvoted = async (memeId) => {
     const meme = await getImage({ '_id': memeId });
-    if (meme && meme.template && !meme.template.includes("blob:http://localhost:8080") || !meme.template.includes('data:image/jpeg')) {
+    if (checkTemplateSource(meme.template)) {
         const dbTemplateStats = await TemplateStats.findOneAndUpdate({ url: meme.template }, { $inc: { upvoted: 1 } }, { new: true })
 
         await dbTemplateStats.save();
@@ -64,7 +68,7 @@ const updateTemplateStatisticUpvoted = async (memeId) => {
  */
 const updateTemplateStatisticDownvoted = async (memeId) => {
     const meme = await getImage({ '_id': memeId });
-    if (meme && meme.template && !meme.template.includes("blob:http://localhost:8080") || !meme.template.includes('data:image/jpeg')) {
+    if (checkTemplateSource(meme.template)) {
         const dbTemplateStats = await TemplateStats.findOneAndUpdate({ url: meme.template }, { $inc: { downvoted: 1 } }, { new: true })
 
         await dbTemplateStats.save();
