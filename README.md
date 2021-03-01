@@ -20,3 +20,5 @@ Open a terminal inside the meme_generator_backend folder. Here you can execute d
 ```
 docker-compose.exe up
 ```
+Then open localhost:8080 in chrome to access the site.
+Open localhost:3000 to access the admin dashboard.
